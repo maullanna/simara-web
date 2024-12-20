@@ -1,3 +1,11 @@
+
+<?php
+include '../backend/function.php';
+
+$sql = "SELECT * FROM madrasah";
+$result = $koneksi->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +17,37 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <style>
+       .modal {
+    display: none; /* Default modal tidak terlihat */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Transparan hitam */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close-modal {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+    </style>
 </head>
 
 <body>
@@ -86,48 +125,43 @@
                             <span class="close-modal">&times;</span>
                             <h2 style="color: #3B3E51; font-family: 'poppins',sans-serif;">Tambah Data Madrasah</h2>
                         </div>
-                        <form>
-                            <br><br>
-                            <div class="modal-input">
-                                <div class="input1" id="input1">
-                                    <span class="iconify" data-icon="solar:upload-linear" data-width="70" style="opacity: 50%; margin-top: -1rem; position: relative; margin-left: 40%;"></span><br>
-                                    <span style="color: rgb(150, 150, 150);">Seret & Lepas file disini atau klik di bawah ini</span>
-                                    <button type="button" id="button-foto">Pilih File</button>
-                                    <input type="file" id="file-input" hidden accept="image/*" style="margin-top: 2rem;">
-                                    <span style="color: red; font-size: smaller;">Maksimal Berukuran 1MB</span>
-                                    <p id="drop-hint" style="display:none; color: gray; margin-top: 10px;">
-                                        Jatuhkan Foto Disini
-                                    </p>
-                                    <img id="preview" src="#" alt="Preview" style="display:none; margin-top: -13rem; width: 100px; height: 100px; object-fit: cover; border: 1px solid #ccc; border-radius: 5px; position: absolute; margin-left: 24.2rem;">
-                                    <p id="file-name" style="display:none; margin-left: 24.2rem; position: absolute; margin-top: -4rem;"></p>
-                                </div>
-                                <div class="input2">
-                                    <label for="nama-madrasah">Nama Madrasah:</label>
-                                    <input type="text" id="nama-madrasah " required>
-                                    <label for="jenis-madrasah">Jenis Madrasah:</label>
-                                    <select name="jenis-madrasah" id="jenis-madrasah" class="select">
-                                        <option value="">MTs Negeri</option>
-                                        <option value="">MTs Swasta</option>
-                                    </select>
-                                </div>
-                                <div class="input3">
-                                    <label for="desk-madrasah">Deskripsi:</label>
-                                    <textarea name="" id="desk-madrasah" style="height: 10rem; width: 47rem; border: 0.5px solid #8f8f96; border-radius: 13px; padding: 10px; box-sizing: border-box; " required></textarea>
-                                </div>
-                                <div class="input4">
-                                    <label for="lokasi-madrasah ">Lokasi:</label>
-                                    <textarea name="" id="lokasi-madrasah" style="height: 10rem; width: 23rem; border: 0.5px solid #8f8f96; border-radius: 13px; padding: 10px; box-sizing: border-box; " required></textarea>
-                                </div>
-                                <div class="input5">
-                                    <label for="map-madrasah">Embed Map:</label>
-                                    <textarea name="" id="map-madrasah" style="height: 10rem; width: 22rem; border: 0.5 solid #8f8f96; border-radius: 13px; padding: 10px;" required></textarea>
-                                </div>
-                            </div>
-                            <div class="modal-buttons">
-                                <button type="button" id="btn-batal">Batal</button>
-                                <button type="submit" id="btn-simpan">Simpan</button>
-                            </div>
-                        </form>
+                        <form method="POST" action="proses_madrasah.php" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="nama">Nama Madrasah:</label>
+            <input type="text" id="nama" name="nama" required>
+        </div>
+
+        <div class="form-group">
+            <label for="logo">Logo Madrasah:</label>
+            <input type="file" id="logo" name="file_path" accept="image/*">
+            <p class="help-text">Maksimal 1MB, format JPG, JPEG, PNG, atau GIF</p>
+        </div>
+
+        <div class="form-group">
+            <label for="jenis">Jenis Madrasah:</label>
+            <select name="jenis" id="jenis">
+                <option value="mts_negeri">MTs Negeri</option>
+                <option value="mts_swasta">MTs Swasta</option>
+                </select>
+        </div>
+        <div class="form-group">
+            <label for="deskripsi">Deskripsi Madrasah:</label>
+            <textarea name="deskripsi" id="deskripsi" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="lokasi">Lokasi Madrasah:</label>
+            <textarea name="lokasi" id="lokasi" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="embed_map">Embed Map:</label>
+            <textarea name="embed_map" id="embed_map" rows="4"></textarea>
+        </div>
+
+
+        <button type="submit" name="simpan">Simpan</button>
+    </form>
                     </div>
                 </div>
                 <!-- Modal Konfirmasi Hapus -->
@@ -142,56 +176,64 @@
                         </div>
                     </div>
                 </div>
-                <table>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Tingkat</th>
-                        <th>Lokasi</th>
-                        <th>Embed Map</th>
-                        <th>Deskripsi Singkat</th>
-                        <th>Aksi</th>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>MtsN 4 Karawang</td>
-                        <td>Mts Negeri</td>
-                        <td>Map</td>
-                        <td><span class="limited_text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo sequi officia quidem cum debitis. Soluta laudantium in quia quibusdam quasi pariatur ratione, esse quos accusamus, sit voluptatem placeat? Rerum, accusamus!</span></td>
-                        <td><span class="limited_text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo sequi officia quidem cum debitis. Soluta laudantium in quia quibusdam quasi pariatur ratione, esse quos accusamus, sit voluptatem placeat? Rerum, accusamus!</span></td>
-                        <td>
-                            <ion-icon name="trash-outline" class="icon-delete" style="cursor: pointer; "></ion-icon>
-                            <ion-icon name="create-outline" class="icon-edit"></ion-icon>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>MtsN 4 Karawang</td>
-                        <td>Mts Negeri</td>
-                        <td>Map</td>
-                        <td><span class="limited_text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo sequi officia quidem cum debitis. Soluta laudantium in quia quibusdam quasi pariatur ratione, esse quos accusamus, sit voluptatem placeat? Rerum, accusamus!</span></td>
-                        <td><span class="limited_text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo sequi officia quidem cum debitis. Soluta laudantium in quia quibusdam quasi pariatur ratione, esse quos accusamus, sit voluptatem placeat? Rerum, accusamus!</span></td>
-                        <td>
-                            <ion-icon name="trash-outline" class="icon-delete" style="cursor: pointer; "></ion-icon>
-                            <ion-icon name="create-outline" class="icon-edit"></ion-icon>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>MtsN 4 Karawang</td>
-                        <td>Mts Negeri</td>
-                        <td>Map</td>
-                        <td><span class="limited_text ">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo sequi officia quidem cum debitis. Soluta laudantium in quia quibusdam quasi pariatur ratione, esse quos accusamus, sit voluptatem placeat? Rerum, accusamus!</span></td>
-                        <td><span class="limited_text ">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo sequi officia quidem cum debitis. Soluta laudantium in quia quibusdam quasi pariatur ratione, esse quos accusamus, sit voluptatem placeat? Rerum, accusamus!</span></td>
-                        <td>
-                            <ion-icon name="trash-outline" class="icon-delete" style="cursor: pointer;"></ion-icon>
-                            <ion-icon name="create-outline" class="icon-edit"></ion-icon>
-                        </td>
-                    </tr>
-                </table>
+                <table border="1">
+    <tr>
+      <th>No</th>
+      <th>Nama</th>
+      <th>File path</th>
+      <th>Tingkat</th>
+      <th>Lokasi</th>
+      <th>Embed Map</th>
+      <th>Deskripsi Singkat</th>
+      <th>Aksi</th>
+    </tr>
+    <?php
+    if ($result->num_rows > 0) {
+      $no = 1;
+      while($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $no++ . "</td>";
+        echo "<td>" . $row["nama"] . "</td>";
+        echo "<td><img src='" . $row["file_path"] . "' width='100' height='50'></td>";
+        echo "<td>" . $row["jenis"] . "</td>";
+        echo "<td>" . $row["deskripsi"] . "</td>";
+        echo "<td>" . $row["lokasi"] . "</td>";
+        echo "<td>" . $row["embed_map"] . "</td>";
+        echo "<td>
+          <a href='edit.php?id=" . $row["id"] . "'>Edit</a> | 
+          <a href='delete.php?id=" . $row["id"] . "'>Delete</a>
+        </td>";
+        echo "</tr>";
+      }
+    } else {
+      echo "Tidak ada data madrasah";
+    }
+    ?>
+  </table>
             </div>
         </div>
-        <script src="js/js_ibadah.js"></script>
+        <script>// Get the modal
+document.addEventListener("DOMContentLoaded", function() {
+  const modal = document.getElementById("modal-popup");
+  const btn = document.getElementById("btn-tambah");
+  const span = document.getElementsByClassName("close-modal")[0];
+
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+});
+</script>
+        <script src="js/uji.php"></script>
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
         <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>

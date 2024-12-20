@@ -1,196 +1,188 @@
 <?php
-include_once '../backend/function.php';
+include '../backend/function.php';
 
-if (isset($_POST['simpan'])) {
-    $bulan = mysqli_real_escape_string($koneksi, $_POST['bulan']);
-    $tahun = mysqli_real_escape_string($koneksi, $_POST['tahun']);
-    $pernikahan = mysqli_real_escape_string($koneksi, $_POST['pernikahan']);
-    $isbat_nikah = mysqli_real_escape_string($koneksi, $_POST['isbat_nikah']);
-
-    // Insert query
-    $query = "INSERT INTO pernikahan (bulan, tahun, pernikahan, isbat_nikah) 
-              VALUES ('$bulan', '$tahun', '$pernikahan', '$isbat_nikah')";
-    
-    // Execute query and check for success
-    if (mysqli_query($koneksi, $query)) {
-        // Redirect to the same page to prevent duplicate submissions on refresh
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit();
-    } else {
-        echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
-    }
-}
-
-// Select query to retrieve data for display
-$query = "SELECT * FROM pernikahan";
-$result = mysqli_query($koneksi, $query);
+// Ambil data dari database
+$sql = "SELECT * FROM madrasah ORDER BY nama ASC";
+$result = mysqli_query($koneksi, $sql);
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatitble" content="IE=Edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pernikahan</title>
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="css/style_pernikahan.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tempat Ibadah</title>
+    <link rel="stylesheet" href="css/style_ibadah_dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
 
+        /* Menambahkan gaya untuk tabel */
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+        /* Menambahkan gaya untuk tabel */
+/* Menambahkan scroll jika teks terlalu panjang */
+td {
+    word-wrap: break-word; /* Agar teks tidak meluber */
+    max-width: 200px; /* Atur lebar kolom maksimal */
+    overflow: hidden; /* Menyembunyikan konten yang melebihi batas */
+    text-overflow: ellipsis; /* Menambahkan "..." jika teks terlalu panjang */
+    padding: 10px;
+    vertical-align: top; /* Menjaga teks tidak tertekuk ke bawah */
+}
+
+/* Menambahkan gaya untuk kolom tertentu */
+td.lokasi, td.deskripsi, td.kegiatan {
+    max-width: 250px; /* Lebar kolom lebih lebar untuk teks panjang */
+    overflow: auto; /* Menambahkan scroll jika teks terlalu panjang */
+}
+
+/* Menangani iframe agar responsif */
+td iframe {
+    width: 100%;
+    height: 100px;
+}
+
+/* Tabel header */
+th {
+    background-color: #f2f2f2;
+    text-align: left;
+    padding: 5px;
+}
+
+
+        .modal {
+    display: none; /* Default modal tidak terlihat */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Transparan hitam */
+    justify-content: center;
+    align-items: center;
+}
+
+
+.modal.active {
+    display: flex; /* Tampilkan modal dengan flexbox */
+}
 
 
 
+/* Desain tombol kustom */
+.custom-file-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2e7031;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
 
-    
-      .modal {
-        display: none; 
-        position: fixed;
-        z-index: 1; 
-        padding-top: 100px; 
-        left: 0;
-        top: 0;
-        width: 100%; 
-        height: 100%; 
-        overflow: auto; 
-        background-color: rgba(0, 0, 0, 0.4); 
-      }
+/* Efek hover */
+.custom-file-label:hover {
+    background-color: #2e7030;
+}
 
-      .modal-content {
-        background-color: #fefefe;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 50%;
-        border-radius: 10px;
-        font-family: Arial, sans-serif;
-      }
-
-      /* Close Button */
-      .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-      }
-
-      .close:hover,
-      .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      /* Form Styles */
-      .modal h2 {
-        color: #3b3e51;
-        font-family: "Poppins", sans-serif;
-      }
-
-      .modal-content label {
-        display: block;
-        margin-top: 10px;
-        font-weight: bold;
-      }
-
-      .modal-content select,
-      .modal-content input[type="number"] {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-        border-radius: 5px;
-        border: 1px solid #ddd;
-      }
-
-      .modal-buttons {
-        margin-top: 20px;
-        text-align: center;
-      }
-
-      .modal-buttons button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-
-      #btn-batal {
-        background-color: #ff0000;
-        color: white;
-      }
-
-      #btn-simpan {
-        background-color: #4caf50;
-        color: white;
-        margin-left: 10px;
-      }
+/* Tampilkan nama file yang dipilih */
+.file-name {
+    margin-top: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #333;
+}
 
 
-      /* Secara default, sembunyikan navigation */
+/* Tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Agar lebar tabel tetap, tidak berubah sesuai konten */
+}
 
+/* Gaya untuk header tabel */
+th {
+    background-color: #f2f2f2;
+    text-align: left;
+    padding: 10px;
+}
 
+/* Gaya untuk cell tabel */
+td {
+    padding: 10px;
+    word-wrap: break-word;  /* Agar teks panjang dipecah ke baris baru */
+    overflow: hidden;  /* Menyembunyikan konten yang meluap */
+    text-overflow: ellipsis;  /* Menampilkan "..." jika teks terlalu panjang */
+}
+
+/* Gaya khusus untuk kolom yang memiliki data panjang */
+.long-text {
+    max-width: 250px;  /* Setel lebar kolom yang ingin dibatasi */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.scrollable {
+    max-height: 80px;  /* Batasi tinggi kolom agar scrollable */
+    overflow-y: auto;
+}
     </style>
 </head>
 
 <body>
-    <!-- navigation -->
-    <div class="container">
+<div class="container">
         <div class="navigation">
             <ul>
                 <li>
                     <a href="#">
-                        <span><img src="img/logo simara no title.png" width="35px" style="margin-top: 10px; margin-left: 14px;"></span>
+                        <span><img src="img/logo simara no title.png" width="35px" style="margin-top: 10px; margin-left: 15px;"></span>
                         <h1 class="header">SiMaRa</h1>
                     </a>
                 </li>
                 <li>
                     <a href="dashboard.php">
-                        <span class="icon"><span class="iconify" data-icon="ion:home-outline" data-width="25" data-height="25"></span>
-                        </span>
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
                         <span class="title">Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a href="pernikahan.php">
-                        <span class="icon"><span class="iconify" data-icon="carbon:partnership" data-width="25" data-height="25"></span></span>
+                    <a href="pernikahan_dashboard.php">
+                        <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
                         <span class="title">Pernikahan</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <span class="icon"><span class="iconify" data-icon="carbon:worship-muslim" data-width="25" data-height="25"></span></span>
+                    <a href="tempat_ibadah_dashboard.php">
+                        <span class="icon"><ion-icon name="moon-outline"></ion-icon></span>
                         <span class="title">Tempat Ibadah</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="madrasah_dashboard.php">
                         <span class="icon"><ion-icon name="school-outline"></ion-icon></span>
                         <span class="title">Madrasah</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <span class="icon"><span class="iconify" data-icon="mdi:partnership-outline" data-width="25" data-height="25"></span></span>
-                        <span class="title">Wakaf</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
+                    <a href="program|_dashboard.php">
                         <span class="icon"><ion-icon name="grid-outline"></ion-icon></span>
                         <span class="title">Program</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="login.php">
                         <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
-                        <span class="title">Sign Out</span>
+                        <span class="title">Keluar</span>
                     </a>
                 </li>
             </ul>
@@ -206,274 +198,124 @@ $result = mysqli_query($koneksi, $query);
                 </div>
             </div>
             <div class="cardBox">
-                <h1>Pendataan pernikahan & isbat-nikah di kecamatan karawang barat</h1>
+                <h1>Pendataan Madrasah di Kecamatan Karawang Barat</h1>
             </div>
-            <div class="details">
-                <div class="chart1">
-                    <canvas id="barChart"></canvas>
+            <input type="search" placeholder="Cari nama atau lokasi " class="search-input "><img src="img/search.png" style="position: absolute; width: 20px; margin-top: 3rem; left: 4.5%;">
+            <div class="table">
+                <div class="header-tabel">
+                    <h1 style="font-size: 20PX; margin-top: 10px; color: #3B3E51; opacity: 60%; font-family: 'poppins', sans-serif; ">Menampilkan Data Semua Masjid</h1>
+                    <button id="btn-tambah"><ion-icon name="add-circle-outline" style="cursor: pointer;"></ion-icon>Tambah</button>
                 </div>
-                <div class="chart2">
-                    <canvas id="lineChart"></canvas>
-                </div>
-            </div>
-            <div class="table" >
-                <div class="header-tabel"  >
-                    <h1 style="font-size: 20PX; margin-top: 10px; color: #3B3E51; opacity: 60%; font-family: 'poppins', sans-serif; cursor:pointer ">Menampilkan Data Pernikahan & Isbat-nikah</h1>
-                    <button id="openModalBtn"><ion-icon name="add-circle-outline" style="cursor: pointer;"></ion-icon>Tambah</button>
-                </div>
-                <!-- Modal Structure -->
-                <div id="modal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2>Tambah Data Pernikahan</h2>
-        <form method="POST" action="">
-          <label for="bulan">Bulan:</label>
-          <select name="bulan" id="bulan" required>
-            <option value="">Pilih Bulan</option>
-            <option value="Januari">Januari</option>
-            <option value="Februari">Februari</option>
-            <option value="Maret">Maret</option>
-            <option value="April">April</option>
-            <option value="Mei">Mei</option>
-            <option value="Juni">Juni</option>
-            <option value="Juli">Juli</option>
-            <option value="Agustus">Agustus</option>
-            <option value="September">September</option>
-            <option value="Oktober">Oktober</option>
-            <option value="November">November</option>
-            <option value="Desember">Desember</option>
-          </select>
-
-          <label for="tahun">Tahun:</label>
-          <input type="number" id="tahun" name="tahun" required />
-
-          <label for="pernikahan">Pernikahan:</label>
-          <input type="number" id="pernikahan" name="pernikahan" required />
-
-          <label for="isbat_nikah">Isbat Nikah:</label>
-          <input type="number" id="isbat_nikah" name="isbat_nikah" required />
-
-          <div class="modal-buttons">
-            <button type="button" id="btn-batal" onclick="closeModal()">Batal</button>
-            <button type="submit" name="simpan" id="btn-simpan">Simpan</button>
-          </div>
-        </form>
-      </div>
-    </div>
-<!-- Modal Konfirmasi Hapus -->
-
-<!-- Modal Konfirmasi Hapus -->
-<div id="modal-konfirmasi" class="modal-hapus">
-    <div class="modal-content-hapus">
-        <dotlottie-player 
-            src="https://lottie.host/bc8a120e-5ed4-4bca-a3c2-f257898c0810/sUEQGb5RuL.json" 
-            background="transparent" 
-            speed="1" 
-            style="width: 200px; height: 200px; margin: 0 auto;" 
-            loop 
-            autoplay>
-        </dotlottie-player>
-        <h2>Yakin Hapus Data ?</h2>
-        <p>Pastikan Kembali Sebelum Hapus Data</p>
-        <div class="modal-buttons-hapus">
-            <button id="btn-hapus" onclick="deleteData()">Hapus</button>
-            <button id="btn-batal-hapus" onclick="closeDeleteModal()">Batal</button>
+               <!-- Modal Structure -->
+               <div id="modal-popup" class="modal">
+    <div class="modal-content">
+        <div class="header-modal">
+            <span class="close-modal">&times;</span>
+            <h2 style="color: #3B3E51; font-family: 'poppins', sans-serif;">Tambah Data Masjid</h2>
         </div>
+        <form action="proses.php" method="POST" enctype="multipart/form-data">
+            <label>Upload Foto:</label>
+            <input type="file" name="file_path" accept="image/*" required>
+            <br>
+            <label for="">Jenis Tempat Ibadah:</label>
+            <select name="jenis" id="jenis_id">
+                <option value="Masjid">Islam</option>
+                <option value="Gereja">Gereja</option>
+                <option value="Klenteng">Klenteng</option>
+                <option value="Vihara">Vihara</option>
+            </select>
+            <br>
+            <br>
+            <label>Logo Ibadah:</label>
+            <select name="logo" id="logo_id">
+                <option value="uploads/Logo-islam.svg">Logo Islam</option>
+                <option value="uploads/Logo-kristen.svg">Logo Kristen</option>
+                <option value="uploads/Logo-Klenteng.svg">Logo Kelenteng</option>
+                <option value="uploads/Logo-vihara.svg">Logo Vihara</option>
+            </select>
+
+            <label>Nama Tempat Ibadah:</label>
+            <input type="text" name="nama_masjid" required>
+            <br>
+            <label>Lokasi:</label>
+            <input type="text" name="lokasi_masjid" required>
+            <br>
+            <label>Deskripsi:</label>
+            <textarea name="desk_masjid" required></textarea>
+            <br>
+            <label>Kegiatan Rutin:</label>
+            <textarea name="kegiatan_masjid" required></textarea>
+            <br>
+            <label>Embed Map:</label>
+            <textarea name="map_masjid" required></textarea>
+            <br>
+            <button type="submit" name="simpan">Simpan</button>
+        </form>
     </div>
 </div>
 
-                <table>
-                    <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Bulan</th>
-                        <th>Tahun</th>
-                        <th>Pernikahan</th>
-                        <th>Isbat Nikah</th>
-                        <th>Aksi</th>
-                    </tr>
-                    </thead>
 
-                    <tbody>
-                    <?php 
-                    $no = 1;
-                    while ($row = mysqli_fetch_assoc($result)) :
-                    ?>
-                    <tr>
-                        <td><?php echo  $no; ?></td>
-                        <td><?php echo $row['bulan']; ?></td>
-                        <td><?php echo $row['tahun']; ?></td>
-                        <td><?php echo $row['pernikahan']; ?></td>
-                        <td><?php echo $row['isbat_nikah']; ?></td>
-                        <td>
-                        <ion-icon name="trash-outline" class="icon-delete" style="cursor: pointer;" onclick="showDeleteModal()"></ion-icon>
-                        <ion-icon name="create-outline" class="icon-edit"></ion-icon>
+    <h2>Data yang Tersimpan</h2>
+    <table border="1">
+        <thead>
+        <tr>
+        <th>No</th>
+      <th>Nama</th>
+      <th>File path</th>
+      <th>Tingkat</th>
+      <th>Lokasi</th>
+      <th>Embed Map</th>
+      <th>Deskripsi Singkat</th>
+      <th>Aksi</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php $no = 1; while ($row = mysqli_fetch_assoc($result)) : ?>
+            <tr>
+            <td><?= $no++; ?></td>
+            <td><img src="<?= $row['file_path']; ?>" alt="Foto" width="60"></td>
+            <td><img src="<?= $row['logo']; ?>" alt="Logo" width="60"></td>
+            <td><?= $row['jenis']; ?></td>
+            <td><?= $row['nama_masjid']; ?></td>
+            <td><?= $row['lokasi_masjid']; ?></td>
+            <td class="scrollable"><?= $row['desk_masjid']; ?></td>
+            <td class="scrollable"><?= $row['kegiatan_masjid']; ?></td>
+            <td class="map-container">
+                <!-- Bungkus iframe dengan div responsif -->
+            
+                <?= $row['map_masjid']; ?>
+            <td>
+            <a href="edit_tempat_ibadah.php?id=<?= $row['id']; ?>">
+        <ion-icon name="create-outline" class="icon-edit" style="cursor: pointer;"></ion-icon>
+    </a>
+    <a href="hapus_tempat_ibadah.php?id=<?= $row['id']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+        <ion-icon name="trash-outline" class="icon-delete" style="cursor: pointer;"></ion-icon>
+    </a>
                         </td>
-                    </tr>
-                    <?php $no++; endwhile;?>
-                    </tbody>
-                </table>
+        </tr>
+        <?php endwhile; ?>
+        </tbody>
+    </table>
             </div>
         </div>
-    </div>
-    
-    <script>
-        // Inisialisasi chart ketika halaman selesai dimuat
-        window.onload = function() {
-            const ctx1 = document.getElementById('barChart').getContext('2d');
-            const barChart = new Chart(ctx1, {
-                type: 'bar',
-                data: {
-                    labels:  ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"],
-                    datasets: [{
-                        label: 'Pernikahan',
-                        data: [15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70], 
-                        backgroundColor: "#F3CD00",
-                        borderColor: "#F3CD00",
-                        borderWidth: 1,
-                    },
-                {
-                    label: 'Isbat Nikah',
-                        data: [5, 10, 15, 20, 25, 20, 30, 35, 45, 40, 50, 55],
-                        backgroundColor: "#3B3E51",
-                        borderColor: "#3B3E51",
-                        borderWidth: 1
-                }
-                
-                ]
+    <script src="js/uji.js"></script>
+<script>
+    function filterData(logo) {
+        // Pilih dropdown
+        const dropdown = document.getElementById('logo_id');
+        
+        // Set nilai dropdown sesuai dengan tombol filter yang diklik
+        dropdown.value = logo;
 
-                    
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Data Pernikahan & Isbat Nikah Tahun Ini',
-                            font: {
-                                size: 18
-                            },
-                            color: "#3b3e51"
-                        },
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                boxWidth: 20,
-                                color: "#3b3e51"
-                            }
-                        }
-                    },
-                    scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Jumlah'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Bulan'
-                        }
-                    }
-                }
-            }
-        });
+        // Lakukan sesuatu dengan data filter (misalnya, filter tabel)
+        console.log('Filter berdasarkan logo:', logo);
+        // Tambahkan logika untuk menampilkan data yang difilter di sini
+    }
+</script>
 
-        const ctxLine = document.getElementById('lineChart').getContext('2d');
-        const lineChart = new Chart(ctxLine, {
-            type: 'line',
-            data: {
-                labels: ["2019", "2020", "2021", "2022", "2023"],
-                datasets: [
-                    {
-                        label: 'Nikah',
-                        data: [200, 300, 400, 500, 600],
-                        backgroundColor:"rgba(54, 162, 235, 0.2)",
-                        borderColor: "#F3CD00",
-                        borderWidth: 2,
-                        fill: true
-                    },
-                    {
-                        label: 'Isbat Nikah',
-                        data: [150, 250, 350, 450, 550],
-                        backgroundColor: "rgba(59, 62, 81, 0.2)", // Warna dengan transparansi
-                        borderColor: "#3B3E51",
-                        borderWidth: 2,
-                        fill: true
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Data Pernikahan & Isbat Nikah dalam Kurun Waktu 5 Tahun Terakhir',
-                        font: {
-                            size: 18
-                        },
-                        color: "#3B3E51"
-                    },
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            boxWidth: 20,
-                            color: "#3B3E51"
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Jumlah'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Tahun'
-                        }
-                    }
-                }
-            }
-        });
-    
-};
-
-      // Open modal
-      document.getElementById("openModalBtn").onclick = function () {
-        document.getElementById("modal").style.display = "block";
-      };
-
-      // Close modal
-      function closeModal() {
-        document.getElementById("modal").style.display = "none";
-      }
-
-      // Close the modal if clicked outside of it
-      window.onclick = function (event) {
-        if (event.target === document.getElementById("modal")) {
-          closeModal();
-        }
-      };
-
-
-         
-    
-    </script>
- 
-
-
-    <script src="js/pernikahan.js"></script>
-
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
-    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </body>
-
 </html>

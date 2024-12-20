@@ -20,14 +20,14 @@
         <h3>KUA PUSAKA KARAWANG BARAT</h3>
         <p>Sistem Manajemen Data Religi dan Agama</p>
         <div class="navbar">
-            <a href="#" id="li">Beranda</a>
+            <a href="beranda.php" id="li">Beranda</a>
             <a href="#" id="li">Profil</a>
             <div class="dropdown">
                 <a href="#" class="dropdown-btn" id="li">Edukasi</a>
                 <div class="dropdown-content">
-                    <a href="#" id="link">Pranikah</a>
-                    <a href="#" id="link">Pernikahan</a>
-                    <a href="#" id="link">Wakaf</a>
+                    <a href="edukasi_pranikah.php" id="link">Pranikah</a>
+                    <a href="edukasi_pernikahan.php" id="link">Pernikahan</a>
+                    <a href="edukasi_wakaf.php" id="link">Wakaf</a>
                 </div>
             </div>
             <div class="dropdown">
@@ -81,19 +81,19 @@
                     <ul>
                         <li>Surat permohonan tanah wakaf</li>
                     </ul>
-                    <img src="img-edukasi/pendaftaran tanah wakaf.svg" alt="" onclick="openFullScreen('img-edukasi/pendaftaran tanah wakaf.svg')">
+                    <img src="img-edukasi/pendaftaran tanah wakaf.png" alt="" onclick="openFullScreen('img-edukasi/pendaftaran tanah wakaf.png')">
                 </div>
                 <div class="no2">
                     <ul>
                         <li>Surat Keterangan Kepala Kelurahan tentang Perwakafan Tanah Milik</li>
                     </ul>
-                    <img src="img-edukasi/pewakafa tanah milik.svg" alt="" onclick="openFullScreen('img-edukasi/pewakafa tanah milik.svg')">
+                    <img src="img-edukasi/pewakafa tanah milik.png" alt="" onclick="openFullScreen('img-edukasi/pewakafa tanah milik.png')">
                 </div>
                 <div class="no3">
                     <ul>
                         <li>Surat Keterangan & Pernyataan Ahli Waris</li>
                     </ul>
-                    <img src="img-edukasi/Ahli waris.svg" alt="" onclick="openFullScreen('img-edukasi/Ahli waris.svg')">
+                    <img src="img-edukasi/Ahli waris.png" alt="" onclick="openFullScreen('img-edukasi/Ahli waris.png')">
                 </div>
             </div>
             <div class="row2">

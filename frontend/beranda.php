@@ -19,7 +19,6 @@ $response = [
     'totalIsbat' => $totalIsbat,
 ];
 
-echo json_encode($response); // Return response as JSON
 ?>
 
 <!DOCTYPE html>
@@ -48,15 +47,9 @@ echo json_encode($response); // Return response as JSON
             <div class="dropdown">
                 <a href="#" class="dropdown-btn" id="li">Edukasi</a>
                 <div class="dropdown-content">
-<<<<<<< HEAD
-                    <a href="#" id="link">Pranikah</a>
-                    <a href="#" id="link">Pernikahan</a>
-                    <a href="#" id="link">Wakaf</a>
-=======
                     <a href="edukasi_pranikah.php" id="link">Pranikah</a>
                     <a href="edukasi_pernikahan.php" id="link">Pernikahan</a>
                     <a href="edukasi_wakaf.php" id="link">Wakaf</a>
->>>>>>> d1b0320a2b421d57ddc7bdf73b92bf084251bdf3
                 </div>
             </div>
             <div class="dropdown">
@@ -118,7 +111,6 @@ echo json_encode($response); // Return response as JSON
                 <img src="img/tempat ibadah icon.svg" style="position: absolute; top: -22%; left: 70%; ">
                 <span style="color: #3B3E51; opacity: 60%; font-size: 13px; ">KUA PUSAKA</span>
               <h3 >Tempat Ibadah</h3>
-
                 <p>List data tempat atau fasilitas Keagamaan antar umat beragama di Kecamatan Karawang Barat</p>
             </div>
         </div>
@@ -231,19 +223,19 @@ echo json_encode($response); // Return response as JSON
     </div>
     <div class="pembatas_2 ">
         <p>Program Kami</p>
-<<<<<<< HEAD
+
         <a href=""><ion-icon name="chevron-forward-outline"></ion-icon></a>
-=======
+
         <a href=""><a href=""><ion-icon name="chevron-forward-outline"></ion-icon></a></a>
->>>>>>> d1b0320a2b421d57ddc7bdf73b92bf084251bdf3
+
     </div>
     <div class="program_kami ">
         <div class="program_1 ">
-            <div class="konten_1 ">
-                <h4>Edukasi Pernikahan Dini di SMP Negeri 5 Karawang</h4>
-                <span style="font-size: 13px; margin-top: 3px; color: #31502C; font-weight: 600; ">21 Mei 2024</span>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus ullam illo iusto totam dolorem, vero incidunt </p>
-                <span style="font-size: 13px; margin-top: 6px; color: #31502C; font-weight: 600; float: right; ">Baca selengkapnya</span>
+        <div class="konten_1 ">
+                <h4>Bimbingan Remaja Usia Sekolah di SMKN 1 Karawang</h4>
+                <span style="font-size: 13px; margin-top: 3px; color: #31502C; font-weight: 600; ">28 Agustus 2024</span>
+                <p>Sebanyak 50 siswa-siswi SMKN 1 Karawang mengikuti kegiatan Bimbingan Remaja Usia Sekolah (BRUS) yang digelar</p>
+                <a href="detail_edukasi.php" style="font-size: 13px; margin-top: 6px; color: #31502C; font-weight: 600; float: right; text-decoration: none;">Baca selengkapnya</a>
             </div>
         </div>
         <div class="program_2 ">
