@@ -152,150 +152,37 @@ body {
   color: var(--warna-hijau);
   background-color: white;
 }
-
 .banner {
-  padding-left: 8.125rem;
-  padding-right: 8.125rem;
-  margin-top: 4.75rem;
-  padding-top: 70px;
+  padding-top: 50px;
 }
 
-.banner h1 {
+.text_banner h1 {
   font-family: "Varela Round", sans-serif;
   color: var(--warna-hijau);
-  margin-top: -17rem;
+  font-weight: 600;
+  font-size: 2.5rem;
 }
 
-.search-input {
-  width: 469px;
-  height: 50px;
-  border-radius: 20px;
-  margin-top: 3rem;
-  border: none;
-  box-shadow: 4px 5px 17px rgba(0, 0, 0, 0.432);
-  padding-left: 51px;
-  padding-right: 20px;
-  outline: none;
+.text_banner {
+  padding-left: 9rem;
+  margin-top: 2rem;
 }
 
-.search-input:focus {
-  box-shadow: 4px 5px 17px rgba(0, 0, 0, 0.7);
-  border: 2px solid var(--warna-kuning);
-  background-color: #f0f8ff;
+.paragraf {
+  width: 74rem;
+  margin-top: 2rem;
+  padding-left: 9rem;
+  color: #3b3e51;
+  text-align: justify;
 }
-
-/* Container Utama */
-.tempat-ibadah-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 kolom per baris */
-  gap: 1.5rem; /* Jarak antar box */
-  justify-items: center; /* Menjaga item tetap terpusat */
-  margin: 2rem auto;
-}
-
-/* Responsif untuk layar kecil */
-@media (max-width: 1200px) {
-  .tempat-ibadah-container {
-    grid-template-columns: repeat(3, 1fr); /* 3 kolom per baris untuk layar sedang */
-  }
-}
-
-@media (max-width: 900px) {
-  .tempat-ibadah-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 kolom per baris untuk layar kecil */
-  }
-}
-
-@media (max-width: 600px) {
-  .tempat-ibadah-container {
-    grid-template-columns: 1fr; /* 1 kolom per baris untuk layar sangat kecil */
-  }
-}
-
-/* Box Tempat Ibadah */
-.tempat-ibadah-box {
-  width: 100%; /* Biarkan box menyesuaikan dengan grid */
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Efek shadow */
-  overflow: hidden;
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  padding: 0;
-  margin: 0;
-  border-radius: 10px;
-}
-
-/* Hover Effect */
-.tempat-ibadah-box:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Gambar Utama */
-.image-container {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
-.image-container img {
-  display: block;
-  height: auto;
-}
-
-/* Gambar Utama */
-.image-container .foto-utama {
-  height: 150px;
-  object-fit: cover;
-  border-radius: 0; /* Opsional, untuk estetika */
-  width: 100%;
-}
-
-/* Informasi Tempat */
-.info-container {
-  padding: 1rem;
-  text-align: left;
-}
-
-.nama-tempat {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.lokasi-jalan {
-  font-size: 0.8rem;
-  color: #777;
-  margin: 0;
-}
-
-/* Icon Logo Agama */
-.icon-container {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.icon-logo {
-  width: 50px;
-  height: 50px;
-  margin-top: 15rem;
-  margin-right: 2rem;
-}
-
+/*
 .filter {
-  position: sticky; /* Tetap berada di tempat saat halaman digulir */
-  top: 0; /* Jarak dari atas halaman */
+  position: sticky; /* Tetap berada di tempat saat halaman digulir 
+  top: 0; 
   padding: 10px;
   display: flex;
   gap: 25px;
-  border-bottom: 1px solid #ddd; /* Garis bawah */
+  border-bottom: 1px solid #ddd; 
 }
 
 .filter button {
@@ -344,9 +231,89 @@ body {
 .filter_page button:hover {
   background-color: var(--warna-hijau);
   color: white;
+}*/
+
+.tempat-ibadah-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  justify-items: center;
+  margin: 1rem auto;
+  margin-top: 5rem;
 }
 
-/* Container Utama */
+@media (max-width: 1200px) {
+  .tempat-ibadah-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .tempat-ibadah-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .tempat-ibadah-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tempat-ibadah-box {
+  width: 100%; /* Biarkan box menyesuaikan dengan grid */
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Efek shadow */
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 0;
+  margin: 0;
+  height: 15rem;
+}
+
+.tempat-ibadah-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+.image-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.image-container img {
+  display: block;
+  height: auto;
+}
+
+/* Gambar Utama */
+.image-container .foto-utama {
+  height: 150px;
+  object-fit: cover;
+  border-radius: 0; /* Opsional, untuk estetika */
+  width: 100%;
+}
+
+/* Informasi Tempat */
+.info-container {
+  padding: 1rem;
+  text-align: left;
+}
+
+.nama-tempat {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.lokasi-jalan {
+  font-size: 0.8rem;
+  color: #777;
+  margin: 0;
+}
 
 .place-image {
   width: 100%;

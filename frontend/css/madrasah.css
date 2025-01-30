@@ -296,6 +296,7 @@ body {
   display: flex;
   gap: 25px;
   border-bottom: 1px solid #ddd; /* Garis bawah */
+  margin-top: 8rem;
 }
 
 .filter button {

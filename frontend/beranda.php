@@ -1,6 +1,9 @@
 <?php 
 include_once '../backend/function.php';
 
+
+
+
 $currentPeriod = date('Y-m'); 
 
 // Query to get the most recent pernikahan and isbat_nikah counts for the current period
@@ -19,6 +22,10 @@ $response = [
     'totalIsbat' => $totalIsbat,
 ];
 
+
+$query = "SELECT * FROM kegiatan ORDER BY tanggal_pelaksanaan DESC LIMIT 3"; 
+$result = mysqli_query($koneksi, $query);
+
 ?>
 
 <!DOCTYPE html>
@@ -28,12 +35,64 @@ $response = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beranda</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="img/simara.png" type="image/x-icon">
+
+    <style>
+
+.program_kami {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.program_item {
+    width: 30%;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    cursor: pointer;
+    height: 18rem;
+}
+
+.program_item:hover {
+    transform: scale(1.05);
+}
+
+.image-container {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.konten_program {
+    padding: 15px;
+}
+
+.konten_program h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #31502C;
+}
+
+.konten_program p {
+    font-size: 14px;
+    color: #666;
+}
+
+    </style>
 
 </head>
 <body>
@@ -43,7 +102,7 @@ $response = [
         <p>Sistem Manajemen Data Religi dan Agama</p>
         <div class="navbar">
             <a href="#" id="li">Beranda</a>
-            <a href="#" id="li">Profil</a>
+            <a href="profil.php" id="li">Profil</a>
             <div class="dropdown">
                 <a href="#" class="dropdown-btn" id="li">Edukasi</a>
                 <div class="dropdown-content">
@@ -55,13 +114,13 @@ $response = [
             <div class="dropdown">
                 <a href="#" class="dropdown-btn" id="li">Layanan</a>
                 <div class="dropdown-content">
-                    <a href="#" id="link">Suscatin</a>
-                    <a href="#" id="link">Wakaf</a>
+                    <a href="suscatin.php" id="link">Suscatin</a>
+                    <a href="edukasi_wakaf.php" id="link">Wakaf</a>
                     <a href="tempat_ibadah.php" id="link">Tempat Ibadah</a>
-                    <a href="#" id="link">Madrasah</a>
+                    <a href="madrasah.php" id="link">Madrasah</a>
                 </div>
             </div>
-            <a href="#" id="li">Program</a>
+            <a href="program.php" id="li">Program</a>
 
         </div>
         <div class="login_staff">
@@ -98,6 +157,7 @@ $response = [
             </div>
     </div>
     <div class="kategori">
+    <a href="suscatin.php" style="text-decoration: none; color: inherit;">
         <div class="suscatin">
             <div class="suscatin_desk">
                 <img src="img/suscatin.svg" style="position: absolute; top: -22%; left: 70%;">
@@ -107,15 +167,18 @@ $response = [
             </div>
         </div>
         <div class="tempat_ibadah">
+            <a href="tempat_ibadah.php" style="text-decoration: none; color: inherit;" >
             <div class="tempat_ibadah_desk">
                 <img src="img/tempat ibadah icon.svg" style="position: absolute; top: -22%; left: 70%; ">
                 <span style="color: #3B3E51; opacity: 60%; font-size: 13px; ">KUA PUSAKA</span>
               <h3 >Tempat Ibadah</h3>
                 <p>List data tempat atau fasilitas Keagamaan antar umat beragama di Kecamatan Karawang Barat</p>
             </div>
+        </a>
         </div>
         <div class="wakaf">
             <div class="wakaf_desk ">
+            <a href="wakaf.php" style="text-decoration: none; color: inherit;" >
                 <img src="img/wakaf icon.svg" style="position: absolute; top: -22%; left: 70%; ">
                 <span style="color: #3B3E51; opacity: 60%; font-size: 13px; ">KUA PUSAKA</span>
                 <h3>Wakaf</h3>
@@ -123,12 +186,14 @@ $response = [
             </div>
         </div>
         <div class="madrasah">
+        <a href="madrasah.php" style="text-decoration: none; color: inherit;">
             <div class="madrasah_desk ">
                 <img src="img/madrasah icon.svg" style="position: absolute; top: -22%; left: 70%; ">
                 <span style="color: #3B3E51; opacity: 60%; font-size: 13px; ">KUA PUSAKA</span>
                 <h3>Madrasah</h3>
                 <p>List data sekolah agama islam dari berbagai tingkatan di Kecamatan Karawang Barat</p>
             </div>
+        </a>
         </div>
     </div>
     </div>
@@ -224,36 +289,35 @@ $response = [
     <div class="pembatas_2 ">
         <p>Program Kami</p>
 
-        <a href=""><ion-icon name="chevron-forward-outline"></ion-icon></a>
 
-        <a href=""><a href=""><ion-icon name="chevron-forward-outline"></ion-icon></a></a>
+      <a href="program.php"><ion-icon name="chevron-forward-outline"></ion-icon></a>
 
     </div>
-    <div class="program_kami ">
-        <div class="program_1 ">
-        <div class="konten_1 ">
-                <h4>Bimbingan Remaja Usia Sekolah di SMKN 1 Karawang</h4>
-                <span style="font-size: 13px; margin-top: 3px; color: #31502C; font-weight: 600; ">28 Agustus 2024</span>
-                <p>Sebanyak 50 siswa-siswi SMKN 1 Karawang mengikuti kegiatan Bimbingan Remaja Usia Sekolah (BRUS) yang digelar</p>
-                <a href="detail_edukasi.php" style="font-size: 13px; margin-top: 6px; color: #31502C; font-weight: 600; float: right; text-decoration: none;">Baca selengkapnya</a>
+    <div class="program_kami">
+    <?php while ($row = mysqli_fetch_assoc($result)): ?>
+        <div class="program_item" onclick="redirectToDetail(<?= $row['id_kegiatan']; ?>)" style="cursor: pointer;">
+            <div class="image-container">
+                <?php 
+                $images = explode(',', $row['upload_file']); // Pisahkan gambar jika ada banyak
+                $imageSrc = !empty($images[0]) ? "uploads/{$images[0]}" : "img/ibadah banner.svg"; 
+                ?>
+                <img src="<?= $imageSrc; ?>" alt="Program Image" class="program-image">
+            </div>
+            <div class="konten_program">
+                <h4><?= $row['judul_kegiatan']; ?></h4>
+                <span style="font-size: 13px; margin-top: 3px; color: #31502C; font-weight: 600;">
+                    <?= date('d F Y', strtotime($row['tanggal_pelaksanaan'])); ?>
+                </span>
+                <p><?= substr($row['deskripsi'], 0, 100); ?>...</p>
+                <a href="detail.php?id=<?= $row['id_kegiatan']; ?>" style="font-size: 13px; margin-top: 6px; color: #31502C; font-weight: 600; float: right; text-decoration: none;">
+                    Baca selengkapnya
+                </a>
             </div>
         </div>
-        <div class="program_2 ">
-            <div class="konten_2 ">
-                <h4>Edukasi Pernikahan Dini di SMP Negeri 5 Karawang</h4>
-                <span style="font-size: 13px; margin-top: 3px; color: #31502C; font-weight: 600; ">21 Mei 2024</span>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus ullam illo iusto totam dolorem, vero incidunt </p>
-                <span style="font-size: 13px; margin-top: 6px; color: #31502C; font-weight: 600; float: right; ">Baca selengkapnya</span>
-            </div>
-        </div>
-        <div class="program_3 ">
-            <div class="konten_3 ">
-                <h4>Edukasi Pernikahan Dini di SMP Negeri 5 Karawang</h4>
-                <span style="font-size: 13px; margin-top: 3px; color: #31502C; font-weight: 600; ">21 Mei 2024</span>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus ullam illo iusto totam dolorem, vero incidunt</p>
-                <span style="font-size: 13px; margin-top: 6px; color: #31502C; font-weight: 600; float: right; ">Baca selengkapnya</span>
-            </div>
-        </div>
+    <?php endwhile; ?>
+</div>
+
+       
     </div>
     <footer>
         <img src="img/whatsapp 2.svg" style="position: absolute; margin-top: -45px; right: 11%;">
@@ -359,11 +423,11 @@ function fetchData() {
     });
 }
 
-// Fungsi animasi untuk transisi angka
+// Fungsi untuk animasi transisi angka
 function animateNumber(id, startValue, endValue, duration) {
     const element = document.getElementById(id);
     let currentValue = startValue;
-    const increment = (endValue - startValue) / (duration / 50000); // Pembagian untuk interval
+    const increment = (endValue - startValue) / (duration / 16); // 16ms per frame (60 FPS)
     const interval = setInterval(() => {
         currentValue += increment;
         if (currentValue >= endValue) {
@@ -371,10 +435,25 @@ function animateNumber(id, startValue, endValue, duration) {
             currentValue = endValue; // Pastikan nilai akhir tercapai
         }
         element.textContent = Math.round(currentValue).toString().padStart(2, '0'); // Update nilai
-    }, 100); // Interval setiap 50ms
+    }, 16); // Interval setiap 16ms
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    // Ambil nilai awal dan akhir dari PHP
+    const totalPernikahan = <?php echo $totalPernikahan; ?>;
+    const totalIsbat = <?php echo $totalIsbat; ?>;
+
+    // Jalankan animasi untuk angka pernikahan dan isbat
+    animateNumber('total-pernikahan', 0, totalPernikahan, 2000); // Durasi 2 detik
+    animateNumber('total-isbat', 0, totalIsbat, 2000); // Durasi 2 detik
+});
+
     </script>
+<script>
+function redirectToDetail(id) {
+    window.location.href = 'detail.php?id=' + id;
+}
+</script>
 
 
     <script src="js/script.js"></script>

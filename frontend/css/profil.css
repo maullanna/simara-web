@@ -12,6 +12,16 @@ body {
   margin: 0;
 }
 
+#tempat-ibadah {
+  flex: 1;
+  min-height: 400px;
+}
+
+:root {
+  --warna-kuning: #f3cd00;
+  --warna-hijau: #31502c;
+}
+
 .header {
   position: fixed;
   top: 0;
@@ -20,7 +30,7 @@ body {
   padding-right: 8.125rem;
   width: 100%;
   height: 4.75rem;
-  background-color: #31502c;
+  background-color: var(--warna-hijau);
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.575);
   z-index: 10;
 }
@@ -28,7 +38,7 @@ body {
 .header h3 {
   margin-left: 60px;
   margin-top: -3rem;
-  color: #f3cd00;
+  color: var(--warna-kuning);
   font-weight: 500;
 }
 
@@ -66,7 +76,7 @@ body {
   position: absolute;
   width: 0;
   height: 3px;
-  background-color: #f3cd00;
+  background-color: var(--warna-kuning);
   bottom: -3px;
   left: 18%;
   border-radius: 4px;
@@ -78,7 +88,7 @@ body {
 }
 
 .navbar #li:hover {
-  color: #f3cd00;
+  color: var(--warna-kuning);
 }
 
 .login_staff {
@@ -86,7 +96,7 @@ body {
   position: relative;
   margin-top: -37px;
   right: 2%;
-  background-color: #f3cd00;
+  background-color: var(--warna-kuning);
   width: 94px;
   height: 30px;
   text-align: center;
@@ -94,7 +104,7 @@ body {
 }
 
 .login_staff a {
-  color: #31502c;
+  color: var(--warna-hijau);
   text-decoration: none;
   font-size: 18px;
   font-weight: 700;
@@ -104,21 +114,24 @@ body {
   position: relative;
   display: inline-block;
 }
+/* Dropdown button */
 
 .dropdown-btn {
   cursor: pointer;
 }
+/* Dropdown content (disembunyikan secara default) */
 
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #31502c;
+  background-color: var(--warna-hijau);
   min-width: 160px;
   z-index: 1;
   top: 25px;
   left: 7px;
   padding-top: 15px;
 }
+/* Style untuk link dalam dropdown */
 
 .dropdown-content a {
   color: white;
@@ -126,13 +139,14 @@ body {
   text-decoration: none;
   display: block;
 }
+/* Menampilkan dropdown saat di-hover */
 
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
 .dropdown-content #link:hover {
-  color: #31502c;
+  color: var(--warna-hijau);
   background-color: white;
 }
 
@@ -140,46 +154,37 @@ body {
   width: 100%;
 }
 
-.banner {
-  margin-top: 1rem;
-}
-
 .konten {
   padding-left: 10rem;
   padding-right: 10rem;
   color: #3b3e51;
-  margin-top: 2rem;
+}
+
+.konten ul {
+  color: var(--warna-hijau);
+  font-weight: 600;
+  font-size: 25px;
+  margin-bottom: 2rem;
+  padding-left: 1.5rem;
+  margin-top: 4rem;
+}
+
+.konten p {
+  text-align: justify;
+}
+
+.konten ol {
+  padding-left: 1.5rem;
+}
+
+iframe {
+  margin-top: 1rem;
   margin-bottom: 5rem;
-}
-
-.judul {
-  padding-left: 9rem;
-  padding-right: 9rem;
-  margin-top: 2rem;
-}
-
-.judul ion-icon {
-  font-size: 2.5rem;
-  position: absolute;
-  margin-top: 1rem;
-  opacity: 80%;
-}
-
-.judul h4 {
-  color: #31502c;
-  font-size: 1.8rem;
-  margin-top: 1rem;
-}
-
-.judul h3 {
-  font-weight: 300;
-  margin-left: 2.5rem;
-  margin-top: 1.5rem;
 }
 
 footer {
   height: 426px;
-  background-color: #31502c;
+  background-color: var(--warna-hijau);
   padding-left: 8.125rem;
   padding-right: 8.125rem;
   display: flex;
@@ -228,74 +233,5 @@ footer ul {
 }
 
 #scrollTopBtn:hover {
-  background-color: #31502c;
-}
-/* Slideshow container */
-.slideshow-container {
-  position: relative;
-  max-width: 100%;
-  margin: auto;
-  overflow: hidden;
-  height: 40rem;
-}
-
-/* Slide */
-.slide {
-  display: none;
-  width: 100%;
-  transition: opacity 0.5s ease;
-  aspect-ratio: 10/8; /* Sesuaikan dengan kebutuhan */
-}
-
-.slide img {
-  width: 100%;
-  height: auto;
-  max-width: 1920px;
-  margin: 0 auto;
-}
-
-/* Tombol navigasi */
-.prev,
-.next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 16px;
-  color: white;
-  font-weight: bold;
-  font-size: 24px;
-  background-color: rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease;
-  user-select: none;
-}
-
-.prev:hover,
-.next:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-.prev {
-  left: 0;
-  border-radius: 0 5px 5px 0;
-}
-
-.next {
-  right: 0;
-  border-radius: 5px 0 0 5px;
-}
-
-/* Animasi fade */
-.fade {
-  animation-name: fade;
-  animation-duration: 1.5s;
-}
-
-@keyframes fade {
-  from {
-    opacity: 0.4;
-  }
-  to {
-    opacity: 1;
-  }
+  background-color: var(--warna-hijau);
 }

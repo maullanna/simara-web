@@ -1,12 +1,8 @@
 <?php
 $mysqli = new mysqli("localhost", "root", "", "projek_kua");
 
-$filter = isset($_GET['filter']) ? $_GET['filter'] : '';
 
-$sql = "SELECT * FROM tempat_ibadah_dashboard";
-if ($filter) {
-    $sql .= " WHERE logo = '$filter'";
-}
+$sql = "SELECT * FROM kegiatan";
 
 $result = $mysqli->query($sql);
 
@@ -18,7 +14,7 @@ $result = $mysqli->query($sql);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tempat Ibadah</title>
-    <link rel="stylesheet" href="css/style_ibadah.css" />
+    <link rel="stylesheet" href="css/program.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700&display=swap" rel="stylesheet" />
@@ -27,7 +23,6 @@ $result = $mysqli->query($sql);
 
     <style>
 
-    
 
     </style>
    
@@ -55,7 +50,7 @@ $result = $mysqli->query($sql);
             <a href="suscatin.php" id="link">Suscatin</a>
             <a href="edukasi_wakaf.php" id="link">Wakaf</a>
             <a href="beranda_ibadah.php" id="link">Tempat Ibadah</a>
-            <a href="madrasah.php" id="link">Madrasah</a>
+            <a href="sekolah.php" id="link">Madrasah</a>
           </div>
         </div>
         <a href="program.php" id="li">Program</a>
@@ -64,43 +59,48 @@ $result = $mysqli->query($sql);
         <a href="login.php">Masuk</a>
       </div>
     </div>
-
     <div class="banner">
-    <img src="img/dotted.svg" style="width: 500px; margin-top: -5.5rem" /><img src=" img/ibadah banner.svg " style="float: right; width: 570px" />
-
-        <div class="text_KUA" style="width: 35rem; ">
-            <h1>Tempat Ibadah Antar Umat Beragama di Karawang Barat</h1>
-            <br />
-        </div>
-        <input style="margin-top: 9rem;" type="search" placeholder="Masukan nama tempat atau lokasi" class="search-input" />
-        <img src="img/search.png" style="position: absolute; width: 20px; margin-top: 10rem; left: 11%" />
-
-        <div class="filter">
-    <button onclick="filterData('Semua')">Semua</button>
-    <button onclick="filterData('Masjid')">Islam</button>
-    <button onclick="filterData('Gereja')">Gereja</button>
-    <button onclick="filterData('Klenteng')">Klenteng</button>
-    <button onclick="filterData('Vihara')">Vihara</button>
-</div>
-<div id="tempat-ibadah" class="tempat-ibadah-container">
-    <?php $no = 1; while ($row = $result->fetch_assoc()): ?>
-        <div class="tempat-ibadah-box" data-jenis="<?= $row['jenis']; ?>">
-        <div class="image-container">
-            <img class="foto-utama" src="<?= $row['file_path']; ?>"  alt="Foto Tempat Ibadah">
-        </div>
-        <div class="info-container">
-            <p class="lokasi-jalan"><?= $row['jenis']; ?></p>
-            <h3 class="nama-tempat"><?= $row['nama_masjid']; ?></h3>
-            <p class="lokasi-jalan"><?= $row['lokasi_masjid']; ?></p>
-        </div>
-        <div class="icon-container">
-            <img src="<?= $row['logo']; ?>" alt="Logo Tempat Ibadah" class="icon-logo">
-        </div>
+      <img src="img/banner edukasi.svg" width="100%" />
     </div>
-    <?php endwhile; ?>
-</div>
+    <div class="text_banner">
+      <h1>Program Edukasi Pernikahan Dini</h1>
+    </div>
+        
+        
+    <div class="paragraf">
+      <p>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Program edukasi pernikahan dini adalah inisiatif yang dirancang untuk memberikan informasi dan pemahaman kepada masyarakat, terutama remaja, tentang dampak, risiko, dan pentingnya
+        mempertimbangkan kematangan fisik, mental, emosional, sosial, serta ekonomi sebelum memutuskan untuk menikah pada usia dini.
+      </p>
+      <br />
+      <p>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Program ini bertujuan untuk mengurangi angka pernikahan dini dan memitigasi dampak negatifnya, seperti kesehatan ibu dan anak, pendidikan, serta kehidupan sosial-ekonomi. Berikut rekap hasil
+        edukasi pernikahan dini :
+      </p>
     </div>
 
+    </div>
+    <div id="tempat-ibadah" class="tempat-ibadah-container">
+        <?php while ($row = mysqli_fetch_assoc($result)): ?>
+            <div class="tempat-ibadah-box" data-tanggal-pelaksanaan="<?= $row['tanggal_pelaksanaan'];?>" onclick="redirectToDetail(<?= $row['id_kegiatan'];?>)" style="cursor: pointer;">
+            <div class="image-container">
+                <?php 
+                $images = explode(',', $row['upload_file']);
+                if (!empty ($images[0])) {
+                    echo "<img src='uploads/{$images[0]}' alt='Foto Tempat Ibadah' class='foto-utama'>";
+                } else {
+                    echo "<img src='img/ibadah banner.svg' alt='Foto Tempat Ibadah'>";
+                }
+                ?>
+            </div>
+                <div class="info-container">
+                    <p class="lokasi-jalan"><?= $row['tanggal_pelaksanaan']; ?></p>
+                    <h3 class="nama-tempat"><?= $row['judul_kegiatan']; ?></h3>
+                    <p class="lokasi-jalan"><?= $row['deskripsi']; ?></p>
+                </div>
+            </div>
+        <?php endwhile; ?>
+    </div>
 
 
 <footer>
@@ -140,21 +140,28 @@ $result = $mysqli->query($sql);
     </footer>
 
     <script>
-       function filterData(jenis) {
+       function filterData(tanggal_pelaksanaan) {
     const allBoxes = document.querySelectorAll('.tempat-ibadah-box');
     
     // Loop through all boxes
     allBoxes.forEach(box => {
-        const boxJenis = box.getAttribute('data-jenis');
+        const boxtanggal_pelaksanaan = box.getAttribute('data-tanggal_pelaksanaan');
         
         // Show all if 'Semua' is selected, or show only matching jenis
-        if (jenis === 'Semua' || boxJenis === jenis) {
+        if (tanggal_pelaksanaan === 'Semua' || boxtanggal_pelaksanaan === tanggal_pelaksanaan) {
             box.style.display = 'block'; // Show the box
         } else {
             box.style.display = 'none'; // Hide the box
         }
     });
+
 }
+
+
+function redirectToDetail(id) {
+    window.location.href = `detail.php?id=${id}`;  // Menggunakan template literal dengan backticks
+}
+
     </script>
 
     <!-- Tambahkan Ionicons di header -->

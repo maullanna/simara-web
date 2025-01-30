@@ -19,7 +19,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $queryUpdate = "UPDATE pernikahan SET periode = '$periode', pernikahan = '$pernikahan', isbat_nikah = '$isbat_nikah' where id = '$id'";
 if(mysqli_query($koneksi, $queryUpdate)){
-    header('Location: pernikahan.php');
+    header('Location: pernikahan_dashboard.php');
         exit();
     
 }else {

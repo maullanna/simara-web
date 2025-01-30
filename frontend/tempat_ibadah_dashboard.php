@@ -269,7 +269,6 @@ td {
 
 <div class="table-container">
 
-    <h2>Data yang Tersimpan</h2>
     <table border="1">
         <thead>
         <tr>

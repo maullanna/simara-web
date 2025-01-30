@@ -1,5 +1,12 @@
 <?php 
+session_start();
 include_once '../backend/function.php';
+
+
+if(!isset($_SESSION['username'])){
+    header('Location:login.php');
+    exit();
+}
 
 $currentPeriod = date('Y-m'); 
 
@@ -18,6 +25,27 @@ $response = [
     'totalPernikahan' => $totalPernikahan,
     'totalIsbat' => $totalIsbat,
 ];
+
+$queryTempatIbadah = "SELECT COUNT(*) AS totalTempatIbadah FROM tempat_ibadah_dashboard"; 
+$resultTempatIbadah = mysqli_query($koneksi, $queryTempatIbadah);
+
+
+if($resultTempatIbadah) {
+    $dataTempatIbadah = mysqli_fetch_assoc($resultTempatIbadah);
+    $totalTempatIbadah = $dataTempatIbadah['totalTempatIbadah'] ?? 0;
+} else {
+    die("Gagal Bro: = " . mysqli_error($koneksi));
+}
+$queryMadrasah = "SELECT COUNT(*) AS totalMadrasah FROM madrasah"; 
+$resultMadrasah = mysqli_query($koneksi, $queryMadrasah);
+
+
+if($resultTempatIbadah) {
+    $dataMadrasah = mysqli_fetch_assoc($resultMadrasah);
+    $totalMadrasah = $dataMadrasah['totalMadrasah'] ?? 0;
+} else {
+    die("Gagal Bro: = " . mysqli_error($koneksi));
+}
 
 ?>
 <!DOCTYPE html>
@@ -120,7 +148,7 @@ $response = [
                 </div>
                 <div class="card">
                     <div>
-                        <div class="number">266</div>
+                        <div class="number"><?php echo $totalTempatIbadah; ?></div>
                         <div class="cardName">Tempat Ibadah</div>
                     </div>
                     <div class="iconBox">
@@ -129,7 +157,7 @@ $response = [
                 </div>
                 <div class="card">
                     <div>
-                        <div class="number">51</div>
+                        <div class="number"><?php echo $totalMadrasah; ?></div>
                         <div class="cardName">Madrasah</div>
                     </div>
 
@@ -152,15 +180,7 @@ $response = [
     </div>
 
                         <!--membuat timer di dashboard ini -->
-                        <?php 
-    if(isset($_GET['page'])) {
-        $page = $_GET['page'];
-        if($page=='dashboard'){
-            include "dashboard.php";
-        }
-    }
-    
-    ?>
+     
 
     <script>
  const scrollTopBtn = document.getElementById("scrollTopBtn");

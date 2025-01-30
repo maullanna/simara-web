@@ -140,8 +140,10 @@ $result = $koneksi->query($sql);
         <div class="form-group">
             <label for="jenis">Jenis Madrasah:</label>
             <select name="jenis" id="jenis">
-                <option value="mts_negeri">MTs Negeri</option>
-                <option value="mts_swasta">MTs Swasta</option>
+                <option value="RA">RA</option>
+                <option value="MI">MI</option>
+                <option value="MTs">MTs</option>
+                <option value="MA">MA</option>
                 </select>
         </div>
         <div class="form-group">
@@ -183,7 +185,7 @@ $result = $koneksi->query($sql);
       <th>File path</th>
       <th>Tingkat</th>
       <th>Lokasi</th>
-      <th>Embed Map</th>
+      <th>Embed Map</th> 
       <th>Deskripsi Singkat</th>
       <th>Aksi</th>
     </tr>
@@ -200,8 +202,8 @@ $result = $koneksi->query($sql);
         echo "<td>" . $row["lokasi"] . "</td>";
         echo "<td>" . $row["embed_map"] . "</td>";
         echo "<td>
-          <a href='edit.php?id=" . $row["id"] . "'>Edit</a> | 
-          <a href='delete.php?id=" . $row["id"] . "'>Delete</a>
+          <a href='edit_madrasah.php?id=" . $row["id"] . "'>Edit</a> | 
+          <a href='delete_madrasah.php?id=" . $row["id"] . "'>Delete</a>
         </td>";
         echo "</tr>";
       }

@@ -162,7 +162,7 @@ mysqli_close($koneksi);
                         <dotlottie-player src="https://lottie.host/bc8a120e-5ed4-4bca-a3c2-f257898c0810/sUEQGb5RuL.json" background="transparent" speed="1" style="width: 200px; height: 200px; margin-left: 6rem;" loop autoplay></dotlottie-player>
                         <h2>Yakin Hapus Data ?</h2>
                         <p>Pastikan Kembali Sebelum Hapus Data</p>
-                        <div class="modal-buttons-hapus">
+                        <div class="modal-buttons-hapus" style="margin-top: 100px;">
                             <button id="btn-hapus">Hapus</button>
                             <button id="btn-batal-hapus">Batal</button>
                         </div>
